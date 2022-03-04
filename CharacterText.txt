@@ -1,265 +1,166 @@
 Just what do you think youre doing?! You dare to come between me and my prey? Is it a habit of yours to scurry about, getting in the way and causing bother?
-
 What are you still bothering me for? Im a Knight. Im not interested in your childish games. I need my rest.
 Begone! Lest I draw my nail...
-
 Know this, cur. I am Zote the Mighty, a knight of great renown. Cross me again, and youll find out why they call my weapon Life Ender.
-
 Foolish beast... you dulled your mandibles by gnawing on my indestructible body. No wonder you were defeated by this weakling!
-
 You there! Why are you skulking about in the shadows?
 Yes, your eyes do not deceive you. I am Zote the Mighty, a knight of great renown. Tremble before me!
-
 While you were hiding here in your dingy little village, I ventured into the dark pit below us and slew a great beast. It had sharp mandibles and atrocious manners.
 Yes, yes. All glory to me. But I dont have time for your adulation! I must rest and prepare for my next journey down.
-
 That daft old fellow over there... He keeps talking absolute drivel. Seems to think the very air is deadly down in the caverns. Perhaps he should consider not breathing.
-
 He keeps talking about dreams, too. Pfah! Dreams are for those too feeble to truly live.
-
 Hmph. What a squalid little hamlet this is. The air is foul and the townsfolk have beady eyes. Ill be heading back down below as soon as possible
-
 This dreary place... it reminds me of home. How ghastly...
-
 Hoy! Watch where youre going, you soggy vagabond! I dont want you splashing me. Ive had a miserable time trying to keep dry.
-
 I am Zote the Mighty, a knight of great renown. If I decide that Im going to stay dry, then thats whats going to happen!
-
 Curse this wretched city! Water and monsters constantly fall from above! Its no wonder this blasted kingdom fell to ruin...
-
 Have you seen them? The guards who still patrol this city, even after dying?
-
 Hmph. Being overly devoted to ones duties is no virtue.
-
 Why does the air weep? Is this kingdom trying to mock me? I shed my last tear long ago...
-
-
 Hoy! What are you doing, you clumsy little oaf?! Swinging your rusty little nail around in the darkness?
-
 You almost struck me! And if you had, it would have been the end of you. Trust me!
-
 I am Zote the Mighty, a knight of great renown. My weapon, Life Ender, has struck down hundreds of foes. Begone, or youll be next!
-
 Hmm? Are you lost in these dark tunnels? I dont care.
 No, I wont lead you out. I know the way, due to my powerful memory, but I only travel alone. Begone.
-
 So, the kingdom was hiding this dark nest full of deadly predators. Well, now the deadliest predator of all is here...
-
 ...Zote the Mighty!
-
 In a cage in the warriors pit	Hmm? What do you want, cur? Have you come to laugh at me as well?
 Fools! Did you never consider that being trapped in this cage was precisely what I intended?!
 Yes, by all means, release me into your arena!
 I am Zote the Mighty! And as soon as I draw my nail, Life Ender, your laughter will turn into terror!
-
 I have been fighting my whole life. Ive slain hundreds, nay thousands, of foes.
-
 And these fools think to face me in combat? Madness! It seems theyve been gripped by a powerful desire to be destroyed.
-
 Very well then. Zote the Mighty will grant them their desire...
-
 Leave me be, you lowly worm! I must rest before my great battle. Pray we do not meet in the arena...
-
 Dream Nailed	Inside the cage:
-
 How miserable, to be stuck here instead of continuing my quest...
-
 I came to this kingdom to fulfill a promise...
-
 and that is what I will do...
-
 Another fool to be cut down by Life Ender...
-
 Ill kill a thousand more...Will that be enough, father?
-
 Fear not, cur... Your death will be swift.
-
 Go on, cur! Scurry away! Lest I humiliate you further!
-
 ... but thats not the only danger I had to overcome in my quest for glory! Youve noticed this trophy, havent you? A keepsake from my final, triumphant battle deep in the pit below us.
-
 Yes, Life Ender claimed another victim, and the crowd erupted into ecstatic cheering. Cheering that was both loud and utterly sincere.
-
 To what do I owe my long string of triumphs and victories, you ask? As I said earlier, the key is in my personal philosophy, the Fifty-Seven Precepts of Zote.
-
 Particularly relevant here is the first precept: Always Win Your Battles. As for the other fifty-six precepts? Well...
-
 I came to this kingdom to fulfill a promise... and now I have succeeded!
-
 That promise I made so long ago... A promise to myself...
-
 A promise of glory! Glory for I, Zote the Mighty! I never doubted myself, never faltered, and now I have achieved everything I desired.
-
 Always Win Your Battles.
 Losing a battle earns you nothing and teaches you nothing. Win your battles, or dont engage in them at all!
-
 Never Let Them Laugh at You.
 Fools laugh at everything, even at their superiors. But beware, laughter isnt harmless! Laughter spreads like a disease, and soon everyone is laughing at you.
 You need to strike at the source of this perverse merriment quickly to stop it from spreading.
-
 Always Be Rested.
 Fighting and adventuring take their toll on your body. When you rest, your body strengthens and repairs itself. The longer you rest, the stronger you become.
-
 Forget Your Past.
 The past is painful, and thinking about your past can only bring you misery. Think about something else instead, such as the future, or some food.
-
 Strength Beats Strength.
 Is your opponent strong? No matter! Simply overcome their strength with even more strength, and theyll soon be defeated.
-
 Choose Your Own Fate.
 Our elders teach that our fate is chosen for us before we are even born. I disagree.
-
 Mourn Not the Dead.
 When we die, do things get better for us or worse? Theres no way to tell, so we shouldnt bother mourning. Or celebrating for that matter.
-
 Travel Alone.
 You can rely on nobody, and nobody will always be loyal. Therefore, nobody should be your constant companion.
-
 Keep Your Home Tidy.
 Your home is where you keep your most prized possession - yourself. Therefore, you should make an effort to keep it nice and clean.
-
 Keep Your Weapon Sharp.
 I make sure that my weapon, Life Ender, is kept well-sharpened at all times. This makes it much easier to cut things.
-
 Mothers Will Always Betray You.
 This precept explains itself.
-
 Keep Your Cloak Dry.
 If your cloak gets wet, dry it as soon as you can. Wearing wet cloaks is unpleasant, and can lead to illness.
-
 Never Be Afraid.
 Fear can only hold you back. Facing your fears can be a tremendous effort. Therefore, you should just not be afraid in the first place.
-
 Respect Your Superiors.
 If someone is your superior in strength or intellect or both, you need to show them your respect. Dont ignore them or laugh at them.
-
 One Foe, One Blow.
 You should only use a single blow to defeat an enemy. Any more is a waste. Also, by counting your blows as you fight, youll know how many foes youve defeated.
-
 Dont Hesitate.
 Once youve made a decision, carry it out and dont look back. Youll achieve much more this way.
-
 Believe In Your Strength.
 Others may doubt you, but theres someone you can always trust. Yourself. Make sure to believe in your own strength, and you will never falter.
-
 Seek Truth in the Darkness.
 This precept also explains itself.
-
 If You Try, Succeed.
 If youre going to attempt something, make sure you achieve it. If you do not succeed, then you have actually failed! Avoid this at all costs.
-
 Speak Only the Truth.
 When speaking to someone, it is courteous and also efficient to speak truthfully. Beware though that speaking truthfully may make you enemies. This is something youll have to bear.
-
 Be Aware of Your Surroundings.
 Dont just walk along staring at the ground! You need to look up every so often, to make sure nothing takes you by surprise.
-
 Abandon the Nest.
 As soon as I could, I left my birthplace and made my way out into the world. Do not linger in the nest. There is nothing for you there.
-
 Identify the Foes Weak Point.
 Every foe you encounter has a weak point, such as a crack in their shell or being asleep. You must constantly be alert and scrutinising your enemy to detect their weakness!
-
 Strike the Foes Weak Point.
 Once you have identified your foes weak point as per the previous precept, strike it. This will instantly destroy them.
-
 Protect Your Own Weak Point.
 Be aware that your foe will try to identify your weak point, so you must protect it. The best protection? Never having a weak point in the first place.
-
 Dont Trust Your Reflection.
 When peering at certain shining surfaces, you may see a copy of your own face. The face will mimic your movements and seems similar to your own, but I dont think it can be trusted.
-
 Eat As Much As You Can.
 When having a meal, eat as much as you possibly can. This gives you extra energy, and means you can eat less frequently.
-
 Dont Peer Into the Darkness.
 If you peer into the darkness and cant see anything for too long, your mind will start to linger over old memories. Memories are to be avoided, as per Precept Four.
-
 Develop Your Sense of Direction.
 Its easy to get lost when travelling through winding, twisting caverns. Having a good sense of direction is like having a magical map inside of your head. Very useful.
-
 Never Accept a Promise.
 Spurn the promises of others, as they are always broken. Promises of love or betrothal are to be avoided especially.
-
 Disease Lives Inside of Dirt.
 Youll get sick if you spend too much time in filthy places. If you are staying in someone elses home, demand the highest level of cleanliness from your host.
-
 Names Have Power.
 Names have power, and so to name something is to grant it power. I myself named my nail Life Ender. Do not steal the name I came up with! Invent your own!
-
 Show the Enemy No Respect.
 Being gallant to your enemies is no virtue! If someone opposes you, they dont deserve respect or kindness or mercy.
-
 Dont Eat Immediately Before Sleeping.
 This can cause restlessness and indigestion. Its just common sense.
-
 Up is Up, Down is Down.
 If you fall over in the darkness, it can be easy to lose your bearing and forget which way is up. Keep this precept in mind!
-
 Eggshells are brittle.
 Once again, this precept explains itself.
-
 Borrow, But Do Not Lend.
 If you lend and are repaid, you gain nothing. If you borrow but do not repay, you gain everything.
-
 Beware the Mysterious Force.
 A mysterious force bears down on us from above, pushing us downwards. If you spend too long in the air, the force will crush you against the ground and destroy you. Beware!
-
 Eat Quickly and Drink Slowly.
 Your body is a delicate thing and you must fuel it with great deliberation. Food must go in as fast as possible, but fluids at a slower rate.
-
 Obey No Law But Your Own.
 Laws written by others may inconvenience you or be a burden. Let your own desires be the only law.
-
 Learn to Detect Lies.
 When others speak, they usually lie. Scrutinise and question them relentlessly until they reveal their deceit.
-
 Spend Geo When You Have It.
 Some will cling onto their Geo, even taking it into the dirt with them when they die. It is better to spend it when you can, so you can enjoy various things in life.
-
 Never Forgive.
 If someone asks forgiveness of you, for instance a brother of yours, always deny it. That brother, or whoever it is, doesnt deserve such a thing.
-
 You Can Not Breathe Water.
 Water is refreshing, but if you try to breathe it you are in for a nasty shock.
-
 One Thing Is Not Another.
 This one should be obvious, but Ive had others try to argue that one thing, which is clearly what it is and not something else, is actually some other thing, which it isnt. Stay on your guard!
-
 The World is Smaller Than You Think.
 When young, you tend to think that the world is vast, huge, gigantic. Its only natural. Unfortunately, its actually quite a lot smaller than that. I can say this, now having travelled everywhere in the land.
-
 Make Your Own Weapon.
 Only you know exactly what is needed in your weapon. I myself fashioned Life Ender from shellwood at a young age. It has never failed me. Nor I it.
-
 Be Careful With Fire.
 Fire is a type of hot spirit that dances about recklessly. It can warm you and provide light, but it will also singe your shell if it gets too close.
-
 Statues are Meaningless.
 Do not honour them! No one has ever made a statue of you or I, so why should we pay them any attention?
-
 Dont Linger on Mysteries.
 Some things in this world appear to us as puzzles. Or enigmas. If the meaning behind something is not immediately evident though, dont waste any time thinking about it. Just move on.
-
 Nothing is Harmless.
 Given the chance, everything in this world will hurt you. Friends, foes, monsters, uneven paths. Be suspicious of them all.
-
 Beware the Jealousy of Fathers.
 Fathers believe that because they created us we must serve them and never exceed their capabilities. If you wish to forge your own path, you must vanquish your father. Or simply abandon him.
-
 Do Not Steal the Desires of Others.
-Every creature keeps their desires locked up inside of themselves. If you catch a glimpse of anothers desires, resist the urge to claim them as your own. It will not lead you to happiness.
-
+Every creature keeps their desires locked up inside of themselves. If you catch a glimpse of anothers desires, resist the urge to claim them as your own. It will not lead you to happiness. 
 If You Lock Something Away, Keep the Key.
 Nothing should be locked away for ever, so hold onto your keys. You will eventually return and unlock everything you hid away.
-
-Bow to No-one.
+Bow to no-one.
 There are those in this world who would impose their will on others. They claim ownership over your food, your land, your body, and even your thoughts!
 They have done nothing to earn these things. Never bow to them, and make sure to disobey their commands.
-
-Do Not Dream.
+Do not dream.
 Dreams are dangerous things. Strange ideas, not your own, can worm their way into your mind. But if you resist those ideas, sickness will wrack your body! Best not to dream at all, like me.
-
-Obey All Precepts.
+Obey all precepts.
 Most importantly, you must commit all of these precepts to memory and obey them all unfailingly. Including this one!
 Hmm. Have you truly listened to everything Ive said? Lets start again and repeat the Fifty-Seven Precepts of Zote.
