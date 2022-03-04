@@ -10,51 +10,70 @@
 
 #Reads the Character Text File
 import spacy
-textnouns = []
-textentity = []
-textverb = []
+text_noun = []
+text_entity = []
+text_verb = []
 #Opens the .txt file and puts it throught natural language processing (nlp)
 nlp = spacy.load('en_core_web_sm')
 text_file = open('CharacterText.txt')
-text = text_file.read().lower()
+text = text_file.read()
 text = text.replace('\n', ' ')
 text = nlp(text)
 #seperates nouns into a list
-textverb = [token.lemma_ for token in text if token.pos_ == "VERB"]
-textnouns = [chunk.text for chunk in text.noun_chunks]
+text_verb = [token.lemma_ for token in text if token.pos_ == "VERB"]
+text_noun = [chunk.text for chunk in text.noun_chunks]
 
 #seperates entities such as numbers or people into a seperate list and labels them
 position = 0
 for entity in text.ents:
-  textentity.append([entity.text])
-  textentity[position].append(entity.label_)
+  text_entity.append([entity.text])
+  text_entity[position].append(entity.label_)
   position += 1
 
 #prints the nouns and entities
-print(textnouns)
-print(textverb)
-print(textentity)
+print("Nouns:")
+print(text_noun)
 
-#Identify speech patterns in nouns and verbs
-nounpatterns = []
-verbpatterns = []
+print("Verbs:")
+print(text_verb)
 
+print("Entitys:")
+print(text_entity)
+
+#Identify speech patterns in nouns and verbs and entitys
+noun_patterns = []
+verb_patterns = []
+entity_patterns = []
+
+#Nouns Patterns
 position = 0
-for each in textnouns:
-  if textnouns.count(textnouns[position]) >= 2:
-    if nounpatterns.count(textnouns[position]) < 1:
-      nounpatterns.append(textnouns[position])
+for each in text_noun:
+  if text_noun.count(text_noun[position]) >= 2:
+    if noun_patterns.count(text_noun[position]) < 1:
+      noun_patterns.append(text_noun[position])
   position = position + 1
 
 print("Noun Patterns Detected:")
-print(nounpatterns)
+print(noun_patterns)
 
+#Verb Patterns
 position = 0
-for each in textverb:
-  if textverb.count(textverb[position]) >= 2:
-    if verbpatterns.count(textverb[position]) < 1:
-      verbpatterns.append(textverb[position])
+for each in text_verb:
+  if text_verb.count(text_verb[position]) >= 2:
+    if verb_patterns.count(text_verb[position]) < 1:
+      verb_patterns.append(text_verb[position])
   position = position + 1
 
 print("Verb Patterns Detected:")
-print(verbpatterns)
+print(verb_patterns)
+
+#Entity Patterns
+position = 0
+for each in text_entity:
+  if text_entity.count(text_entity[position]) >= 2:
+    if entity_patterns.count(text_entity[position]) < 1 and not (text_entity[position][1] == 'ORDINAL' or text_entity[position][1] == 'CARDINAL'):
+      entity_patterns.append(text_entity[position])
+  position = position + 1
+
+print("Entity Patterns Detected:")
+print(entity_patterns)
