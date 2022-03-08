@@ -10,6 +10,12 @@
 
 #Reads the Character Text File
 import spacy
+import nltk
+from nltk.stem import WordNetLemmatizer
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+lemmatizer = WordNetLemmatizer()
+
 text_noun = []
 text_entity = []
 text_verb = []
@@ -77,3 +83,32 @@ for each in text_entity:
 
 print("Entity Patterns Detected:")
 print(entity_patterns)
+
+#Removes differnt words that means the same thing, i.e. 'Study',' Studying' => 'Study'
+verb_lemmatized = []
+noun_lemmatized = []
+
+position = 0
+for each in verb_patterns:
+  if len(verb_patterns) > position:
+    if verb_lemmatized.count(str.lower(lemmatizer.lemmatize(verb_patterns[position], pos = 'v'))) < 1:
+      verb_lemmatized.append(str.lower(lemmatizer.lemmatize(verb_patterns[position], pos = 'v')))
+  position = position + 1
+
+position = 0
+for each in noun_patterns:
+  if len(noun_patterns) > position:
+    if noun_lemmatized.count(str.lower(lemmatizer.lemmatize(noun_patterns[position], pos = 'n'))) < 1:
+      noun_lemmatized.append(str.lower(lemmatizer.lemmatize(noun_patterns[position], pos = 'n')))
+  position = position + 1
+  
+print("Lemmatized Verbs:")
+print(verb_lemmatized)
+print("Lemmatized Nouns:")
+print(noun_lemmatized)
+
+
+
+
+
+
