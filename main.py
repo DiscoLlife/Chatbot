@@ -9,42 +9,42 @@
 #list of patterns 
 
 #Reads the Character Text File
+import string
 import spacy
+from spacy.matcher import Matcher
 import nltk
 from nltk.stem import WordNetLemmatizer
 nltk.download('wordnet')
 nltk.download('omw-1.4')
+nltk.download('averaged_perceptron_tagger')
+nlp = spacy.load('en_core_web_sm')
 lemmatizer = WordNetLemmatizer()
+nounmatcher  = Matcher(nlp.vocab)
+verbmatcher = Matcher(nlp.vocab)
 
 text_noun = []
 text_entity = []
 text_verb = []
 #Opens the .txt file and puts it throught natural language processing (nlp)
+#Also tokenises & tags text for later usage
+txt = open('CharacterText.txt')
+txt = txt.read()
 nlp = spacy.load('en_core_web_sm')
-text_file = open('CharacterText.txt')
-text = text_file.read()
+text = txt
 text = text.replace('\n', ' ')
-text = nlp(text)
+nlptext = nlp(text)
+text = text.split()
+text = nltk.pos_tag(text)
 #seperates nouns into a list
-text_verb = [token.lemma_ for token in text if token.pos_ == "VERB"]
-text_noun = [chunk.text for chunk in text.noun_chunks]
+text_verb = [token.lemma_ for token in nlptext if token.pos_ == "VERB"]
+text_noun = [chunk.text for chunk in nlptext.noun_chunks]
 
 #seperates entities such as numbers or people into a seperate list and labels them
 position = 0
-for entity in text.ents:
+for entity in nlptext.ents:
   text_entity.append([entity.text])
   text_entity[position].append(entity.label_)
   position += 1
-
-#prints the nouns and entities
-print("Nouns:")
-print(text_noun)
-
-print("Verbs:")
-print(text_verb)
-
-print("Entitys:")
-print(text_entity)
 
 #Identify speech patterns in nouns and verbs and entitys
 noun_patterns = []
@@ -107,8 +107,119 @@ print(verb_lemmatized)
 print("Lemmatized Nouns:")
 print(noun_lemmatized)
 
+#takes tokenised text and extracts meaningful phrases from it
+text_chunks = ''
+grammar = "NP : {<DT>?<JJ>*<NN> } "
 
+parser = nltk.RegexpParser(grammar)
+text_chunks = parser.parse(text)
 
+text_chinks = ''
+grammar = r""" NP: {<.*>+}
+                    }<JJ>+{"""
+parser = nltk.RegexpParser(grammar)
+text_chinks = parser.parse(text)
+print(text_chinks)
 
+txtlist = []
+dupetxt = txt
+position = 0
+#Turns the txt into a list of phrases
+while True:
+  try:
+    if dupetxt[position] == '\n':
+      txtlist.append(dupetxt[0:position].lower())
+      dupetxt = dupetxt.strip(dupetxt[0:position])
+      position = 0
+      print(txtlist)
+      print(dupetxt)
+    print(position)
+    position = position + 1
+  except:
+    print('done')
+    break
 
+#Sets up the pattern matchers
+names = []
+position = 0
+for each in entity_patterns:
+  if entity_patterns[position][1] == "PERSON":
+    names.append(entity_patterns[position][0].lower())
+  position = position + 1
+  print(names)
 
+byes = ["bye","goodbye","cya","see you","later"]
+noun_pattern = [{"LEMMA": {"IN": noun_lemmatized}}]
+verb_pattern = [{"LEMMA": {"IN": verb_lemmatized}}]
+nounmatcher.add("NOUN", [noun_pattern])
+verbmatcher.add("VERB", [verb_pattern])
+
+#Test phrases for various intents such as greeting or good bye type messages
+position2 = 0
+def IntentMatcher(string, intent):
+  if intent == "greet":
+    stringcontain = [ele for ele in names if(ele in string)]
+    if bool(stringcontain) and ("i" in string or "me" in string or "hello" in string or "my name" in string or "im" in string or "i'm" in string):
+      return bool(stringcontain)
+    else:
+      return False
+  elif intent == "bye":
+    stringcontain = [ele for ele in byes if(ele in string)]
+    return bool(stringcontain)
+  else:
+    return False
+          
+#Checks the text for possible greeting and good bye phrases
+greetlist = []
+byelist = []
+position = 0
+for each in txtlist:
+  if IntentMatcher(txtlist[position], "greet"):
+    print("Greeting identified")
+    greetlist.append(txtlist[position])
+    print(txtlist[position])
+  if IntentMatcher(txtlist[position], "bye"):
+    print("Goodbye identified")
+    byelist.append(txtlist[position])
+    print(txtlist[position])
+  position = position + 1
+
+#Removes '\n' from the list inserted into the function
+def newlineremover(list):
+  position = 0
+  newlist = []
+  for each in list:
+    if "\n" in list[position]:
+      newlist.append(list[position].strip("\n"))
+    else:
+      newlist.append(list[position])
+    position = position + 1
+  return newlist
+
+greetlist = newlineremover(greetlist)
+byelist = newlineremover(byelist)
+
+print("List of possible greetings:")
+print(greetlist)
+
+def punctuatuinremover(list):
+  position = 0
+  newlist = []
+  for each in list:
+    newlist.append(list[position].translate(str.maketrans('', '', string.punctuation)))
+    position = position + 1
+  return newlist
+
+#Turns the text into a list of numbers
+dupetxt = newlineremover(txt.lower().split())
+txtcount = []
+txtcountmatch = []
+for each in dupetxt:
+  countingtxt = dupetxt[0]
+  txtcount.append(dupetxt.count(countingtxt))
+  txtcountmatch.append(dupetxt[0])
+  while dupetxt.count(countingtxt) > 0:
+    dupetxt.remove(countingtxt)
+
+print(txtcount)
+print(txtcountmatch)
