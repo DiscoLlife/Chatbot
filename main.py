@@ -185,7 +185,7 @@ for each in txtlist:
   position = position + 1
 
 #Removes '\n' from the list inserted into the function
-def newlineremover(list):
+def nlineremover(list):
   position = 0
   newlist = []
   for each in list:
@@ -196,13 +196,13 @@ def newlineremover(list):
     position = position + 1
   return newlist
 
-greetlist = newlineremover(greetlist)
-byelist = newlineremover(byelist)
+greetlist = nlineremover(greetlist)
+byelist = nlineremover(byelist)
 
 print("List of possible greetings:")
 print(greetlist)
 
-def punctuatuinremover(list):
+def puncremover(list):
   position = 0
   newlist = []
   for each in list:
@@ -211,7 +211,8 @@ def punctuatuinremover(list):
   return newlist
 
 #Turns the text into a list of numbers
-dupetxt = newlineremover(txt.lower().split())
+dupetxt = nlineremover(txt.lower().split())
+dupetxt = puncremover(dupetxt)
 txtcount = []
 txtcountmatch = []
 for each in dupetxt:
