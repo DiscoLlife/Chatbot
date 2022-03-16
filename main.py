@@ -57,7 +57,7 @@ for each in text_noun:
   if text_noun.count(text_noun[position]) >= 2:
     if noun_patterns.count(text_noun[position]) < 1:
       noun_patterns.append(text_noun[position])
-  position = position + 1
+  position += 1
 
 print("Noun Patterns Detected:")
 print(noun_patterns)
@@ -68,7 +68,7 @@ for each in text_verb:
   if text_verb.count(text_verb[position]) >= 2:
     if verb_patterns.count(text_verb[position]) < 1:
       verb_patterns.append(text_verb[position])
-  position = position + 1
+  position += 1
 
 print("Verb Patterns Detected:")
 print(verb_patterns)
@@ -79,7 +79,7 @@ for each in text_entity:
   if text_entity.count(text_entity[position]) >= 2:
     if entity_patterns.count(text_entity[position]) < 1 and not (text_entity[position][1] == 'ORDINAL' or text_entity[position][1] == 'CARDINAL'):
       entity_patterns.append(text_entity[position])
-  position = position + 1
+  position += 1
 
 print("Entity Patterns Detected:")
 print(entity_patterns)
@@ -93,14 +93,14 @@ for each in verb_patterns:
   if len(verb_patterns) > position:
     if verb_lemmatized.count(str.lower(lemmatizer.lemmatize(verb_patterns[position], pos = 'v'))) < 1:
       verb_lemmatized.append(str.lower(lemmatizer.lemmatize(verb_patterns[position], pos = 'v')))
-  position = position + 1
+  position += 1
 
 position = 0
 for each in noun_patterns:
   if len(noun_patterns) > position:
     if noun_lemmatized.count(str.lower(lemmatizer.lemmatize(noun_patterns[position], pos = 'n'))) < 1:
       noun_lemmatized.append(str.lower(lemmatizer.lemmatize(noun_patterns[position], pos = 'n')))
-  position = position + 1
+  position += 1
   
 print("Lemmatized Verbs:")
 print(verb_lemmatized)
@@ -108,18 +108,18 @@ print("Lemmatized Nouns:")
 print(noun_lemmatized)
 
 #takes tokenised text and extracts meaningful phrases from it
-text_chunks = ''
-grammar = "NP : {<DT>?<JJ>*<NN> } "
+#text_chunks = ''
+#grammar = "NP : {<DT>?<JJ>*<NN> } "
 
-parser = nltk.RegexpParser(grammar)
-text_chunks = parser.parse(text)
+#parser = nltk.RegexpParser(grammar)
+#text_chunks = parser.parse(text)
 
-text_chinks = ''
-grammar = r""" NP: {<.*>+}
-                    }<JJ>+{"""
-parser = nltk.RegexpParser(grammar)
-text_chinks = parser.parse(text)
-print(text_chinks)
+#text_chinks = ''
+#grammar = r""" NP: {<.*>+}
+#                    }<JJ>+{"""
+#parser = nltk.RegexpParser(grammar)
+#text_chinks = parser.parse(text)
+
 
 txtlist = []
 dupetxt = txt
@@ -131,10 +131,7 @@ while True:
       txtlist.append(dupetxt[0:position].lower())
       dupetxt = dupetxt.strip(dupetxt[0:position])
       position = 0
-      print(txtlist)
-      print(dupetxt)
-    print(position)
-    position = position + 1
+    position += 1
   except:
     print('done')
     break
@@ -145,7 +142,7 @@ position = 0
 for each in entity_patterns:
   if entity_patterns[position][1] == "PERSON":
     names.append(entity_patterns[position][0].lower())
-  position = position + 1
+  position += 1
   print(names)
 
 byes = ["bye","goodbye","cya","see you","later"]
@@ -182,7 +179,7 @@ for each in txtlist:
     print("Goodbye identified")
     byelist.append(txtlist[position])
     print(txtlist[position])
-  position = position + 1
+  position += 1
 
 #Removes '\n' from the list inserted into the function
 def nlineremover(list):
@@ -193,7 +190,7 @@ def nlineremover(list):
       newlist.append(list[position].strip("\n"))
     else:
       newlist.append(list[position])
-    position = position + 1
+    position += 1
   return newlist
 
 greetlist = nlineremover(greetlist)
@@ -207,8 +204,17 @@ def puncremover(list):
   newlist = []
   for each in list:
     newlist.append(list[position].translate(str.maketrans('', '', string.punctuation)))
-    position = position + 1
+    position += 1
   return newlist
+
+def Lemmatize(string):
+  lemmatizedstring = ''
+  lemmatizedstring += str.lower(lemmatizer.lemmatize(string, pos = 'n'))
+  lemmatizedstring += str.lower(lemmatizer.lemmatize(string, pos = 'v'))
+  lemmatizedstring += str.lower(lemmatizer.lemmatize(string, pos = 'a'))
+  lemmatizedstring += str.lower(lemmatizer.lemmatize(string, pos = 'r'))
+  lemmatizedstring += str.lower(lemmatizer.lemmatize(string, pos = 's'))
+  return string
 
 #Turns the text into a list of numbers
 dupetxt = nlineremover(txt.lower().split())
@@ -224,3 +230,64 @@ for each in dupetxt:
 
 print(txtcount)
 print(txtcountmatch)
+
+def matchcount(string):
+  try:
+    count = txtcount[txtcountmatch.index(string.lower())]
+  except:
+    return 0
+  return count
+
+print(matchcount("you"))
+print(matchcount("to"))
+print(matchcount("father"))
+
+#Calculates the frequency of a word in the text
+totalwords = 0
+position = 0
+for each in txtcount:
+  totalwords += txtcount[position]
+  position += 1
+print(totalwords)
+txtfreq = []
+position = 0
+for each in txtcount:
+  txtfreq.append(float(txtcount[position] / totalwords))
+  position += 1
+
+print(txtfreq)
+
+print(len(txtfreq))
+print(len(txtcountmatch))
+print(len(txtcount))
+
+nounlemmatxt = Lemmatize(txt).lower().split()
+nounlemmatxt = puncremover(nounlemmatxt)
+position = 0
+#Frequency of nouns and verbs
+nouncount = []
+position = 0
+for each in noun_lemmatized:
+  nouncount.append(nounlemmatxt.count(noun_lemmatized[position].lower()))
+  position = position + 1
+
+
+
+#txtcount[txtcountmatch.index(string.lower())]
+while nouncount.count(0) > 0:
+  position2 = nouncount.index(0)
+  nouncount.pop(position2)
+  noun_lemmatized.pop(position2)
+  
+print(nouncount)
+print(noun_lemmatized)
+print(len(nouncount))
+print(len(noun_lemmatized))
+
+position = 0
+totalnoun = 0
+for each in nouncount:
+  totalnoun += nouncount[position]
+  position += 1
+
+print(totalnoun)
