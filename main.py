@@ -261,28 +261,22 @@ print(len(txtfreq))
 print(len(txtcountmatch))
 print(len(txtcount))
 
-nounlemmatxt = Lemmatize(txt).lower().split()
-nounlemmatxt = puncremover(nounlemmatxt)
+lemmatxt = Lemmatize(txt).lower().split()
+lemmatxt = puncremover(lemmatxt)
+dupelemmatxt = lemmatxt
 position = 0
 #Frequency of nouns and verbs
 nouncount = []
 position = 0
 for each in noun_lemmatized:
-  nouncount.append(nounlemmatxt.count(noun_lemmatized[position].lower()))
+  nouncount.append(dupelemmatxt.count(noun_lemmatized[position].lower()))
   position = position + 1
-
-
 
 #txtcount[txtcountmatch.index(string.lower())]
 while nouncount.count(0) > 0:
   position2 = nouncount.index(0)
   nouncount.pop(position2)
   noun_lemmatized.pop(position2)
-  
-print(nouncount)
-print(noun_lemmatized)
-print(len(nouncount))
-print(len(noun_lemmatized))
 
 position = 0
 totalnoun = 0
@@ -291,3 +285,12 @@ for each in nouncount:
   position += 1
 
 print(totalnoun)
+
+nounfreq = []
+position = 0
+for each in nouncount:
+  nounfreq.append(nouncount[position] / totalnoun)
+  position += 1 
+
+print(nounfreq)
+
