@@ -1,5 +1,3 @@
-#import hannah
-
 #Start with Greeting
 
 #User inputs reply to greeting
@@ -106,20 +104,6 @@ print("Lemmatized Verbs:")
 print(verb_lemmatized)
 print("Lemmatized Nouns:")
 print(noun_lemmatized)
-
-#takes tokenised text and extracts meaningful phrases from it
-#text_chunks = ''
-#grammar = "NP : {<DT>?<JJ>*<NN> } "
-
-#parser = nltk.RegexpParser(grammar)
-#text_chunks = parser.parse(text)
-
-#text_chinks = ''
-#grammar = r""" NP: {<.*>+}
-#                    }<JJ>+{"""
-#parser = nltk.RegexpParser(grammar)
-#text_chinks = parser.parse(text)
-
 
 txtlist = []
 dupetxt = txt
@@ -270,9 +254,8 @@ nouncount = []
 position = 0
 for each in noun_lemmatized:
   nouncount.append(dupelemmatxt.count(noun_lemmatized[position].lower()))
-  position = position + 1
+  position += 1
 
-#txtcount[txtcountmatch.index(string.lower())]
 while nouncount.count(0) > 0:
   position2 = nouncount.index(0)
   nouncount.pop(position2)
@@ -292,5 +275,56 @@ for each in nouncount:
   nounfreq.append(nouncount[position] / totalnoun)
   position += 1 
 
+print(noun_lemmatized)
 print(nounfreq)
 
+def matchncount(noun):
+  try:
+    count = nouncount[noun_lemmatized.index(noun)]
+  except:
+    return 0
+  return count
+
+matchncount('you')
+
+lemmatxt = Lemmatize(txt).lower().split()
+lemmatxt = puncremover(lemmatxt)
+dupelemmatxt = lemmatxt
+position = 0
+
+verbcount = []
+position = 0
+for each in verb_lemmatized:
+  verbcount.append(dupelemmatxt.count(verb_lemmatized[position].lower()))
+  position += 1
+
+while verbcount.count(0) > 0:
+  position2 = verbcount.index(0)
+  verbcount.pop(position2)
+  verb_lemmatized.pop(position2)
+
+position = 0
+totalverb = 0
+for each in verbcount:
+  totalverb += verbcount[position]
+  position += 1
+
+print(totalverb)
+
+verbfreq = []
+position = 0
+for each in verbcount:
+  verbfreq.append(verbcount[position] / totalverb)
+  position += 1 
+
+print(verb_lemmatized)
+print(verbfreq)
+
+def matchvcount(verb):
+  try:
+    count = verbcount[verb_lemmatized.index(verb)]
+  except:
+    return 0
+  return count
+
+print(matchvcount("strike"))
