@@ -1,24 +1,23 @@
-#Start with Greeting
-
-#User inputs reply to greeting
-
-#taking key nouns out of text to decipher see: https://spacy.io/ to decifer text patterns
-
-#list of patterns 
-
-#Reads the Character Text File
+#Put text through NLP(Natural Language processing)
+#Use data to train a bot/ai
+#User sends message
+#Message is sent throught intent detection
+#bot responds with another message with a hopefully valid response for that intent
+#
+#Important terms:
+#Position - this is used to get a position in a list or text(same for position 2)
+#
+#
 import string
 import spacy
-from spacy.matcher import Matcher
 import nltk
 from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 nltk.download('averaged_perceptron_tagger')
 nlp = spacy.load('en_core_web_sm')
 lemmatizer = WordNetLemmatizer()
-nounmatcher  = Matcher(nlp.vocab)
-verbmatcher = Matcher(nlp.vocab)
 
 text_noun = []
 text_entity = []
@@ -33,8 +32,9 @@ text = text.replace('\n', ' ')
 nlptext = nlp(text)
 text = text.split()
 text = nltk.pos_tag(text)
-#seperates nouns into a list
+#seperates verbs into a list
 text_verb = [token.lemma_ for token in nlptext if token.pos_ == "VERB"]
+#seperates nouns into a list
 text_noun = [chunk.text for chunk in nlptext.noun_chunks]
 
 #seperates entities such as numbers or people into a seperate list and labels them
@@ -51,38 +51,50 @@ entity_patterns = []
 
 #Nouns Patterns
 position = 0
+#Repeats for each value in the noun list
 for each in text_noun:
+  #does the noun appear more than once in the list?
   if text_noun.count(text_noun[position]) >= 2:
+    #Is not in the patterns list already? if so, append it to the patterns list
     if noun_patterns.count(text_noun[position]) < 1:
       noun_patterns.append(text_noun[position])
   position += 1
 
+#Prints detected noun patterns
 print("Noun Patterns Detected:")
 print(noun_patterns)
 
 #Verb Patterns
 position = 0
+#Repeats for each value in the verb list
 for each in text_verb:
+  #does the verb appear more than once in the list?
   if text_verb.count(text_verb[position]) >= 2:
+    #Is not in the patterns list already? if so, append it to the patterns list
     if verb_patterns.count(text_verb[position]) < 1:
       verb_patterns.append(text_verb[position])
   position += 1
 
+#Prints detected verb patterns
 print("Verb Patterns Detected:")
 print(verb_patterns)
 
 #Entity Patterns
 position = 0
+#Repeats for each entity in the entity list
 for each in text_entity:
+  #does the entity appear more than once?
   if text_entity.count(text_entity[position]) >= 2:
+    #Is it not alredly in the patterns list AND is it not a number of any type?
     if entity_patterns.count(text_entity[position]) < 1 and not (text_entity[position][1] == 'ORDINAL' or text_entity[position][1] == 'CARDINAL'):
       entity_patterns.append(text_entity[position])
   position += 1
 
+#Prints detected entity patterns
 print("Entity Patterns Detected:")
 print(entity_patterns)
 
-#Removes differnt words that means the same thing, i.e. 'Study',' Studying' => 'Study'
+#Lemmatize removes differnt words that means the same thing, i.e. 'Study',' Studying' => 'Study'
 verb_lemmatized = []
 noun_lemmatized = []
 
@@ -120,7 +132,6 @@ while True:
     print('done')
     break
 
-#Sets up the pattern matchers
 names = []
 position = 0
 for each in entity_patterns:
@@ -129,26 +140,80 @@ for each in entity_patterns:
   position += 1
   print(names)
 
-byes = ["bye","goodbye","cya","see you","later"]
-noun_pattern = [{"LEMMA": {"IN": noun_lemmatized}}]
-verb_pattern = [{"LEMMA": {"IN": verb_lemmatized}}]
-nounmatcher.add("NOUN", [noun_pattern])
-verbmatcher.add("VERB", [verb_pattern])
+hello_words = ["hello"]
+hello_keywords = []
+bye_words = ["bye","goodbye","cya","see you","later","farewell","so long"]
+bye_keywords = []
+agree_words = ["exactly","yep","indeed","correct","definitely"]
+agree_keywords = []
+disagree_words = ["no","not","wrong"]
+disagree_keywords = []
+suggest_words = ["perhaps","maybe","what if"]
+suggest_keywords = []
+congrat_words = ["congratulations", "well done"]
+congrats_keywords = []
+question_words = ["what","why","who","when","where"]
+question_keywords = []
+#identifies various synonyms
+def getSynonym(list):
+  position = 0
+  Synonymlist = []
+  for each in list:
+    for words in wordnet.synsets(list[position]):
+      for lemma in words.lemmas():
+        Synonymlist.append(lemma.name())
+    position += 1
+  Synonymlist.extend(list)
+  return Synonymlist
+
+hello_keywords = getSynonym(hello_words)
+bye_keywords = getSynonym(bye_words)
+agree_keywords = getSynonym(agree_words)
+disagree_keywords = getSynonym(disagree_words)
+suggest_keywords = getSynonym(suggest_words)
+congrats_keywords = getSynonym(congrat_words)
+question_keywords = getSynonym(question_words)
+
 
 #Test phrases for various intents such as greeting or good bye type messages
 position2 = 0
 def IntentMatcher(string, intent):
   if intent == "greet":
-    stringcontain = [ele for ele in names if(ele in string)]
-    if bool(stringcontain) and ("i" in string or "me" in string or "hello" in string or "my name" in string or "im" in string or "i'm" in string):
-      return bool(stringcontain)
-    else:
-      return False
+    stringcontain = [ele for ele in names if(ele in string)] and [ele for ele in hello_keywords if(ele in string)]
+    return stringcontain
   elif intent == "bye":
-    stringcontain = [ele for ele in byes if(ele in string)]
-    return bool(stringcontain)
+    stringcontain = [ele for ele in bye_keywords if(ele in string)]
+    return stringcontain
+  elif intent == "agree":
+    stringcontain = [ele for ele in agree_keywords if(ele in string)]
+    return stringcontain
+  elif intent == "disagree":
+    stringcontain = [ele for ele in disagree_keywords if(ele in string)]
+    return stringcontain
+  elif intent == "suggest":
+    stringcontain = [ele for ele in suggest_keywords if(ele in string)]
+    return stringcontain
+  elif intent == "congrats":
+    stringcontain = [ele for ele in congrats_keywords if(ele in string)]
+    return stringcontain
+  elif intent == "question":
+    stringcontain = [ele for ele in question_keywords if(ele in string)]
+    return stringcontain
   else:
-    return False
+    stringcontain = [ele for ele in hello_keywords if(ele in string)]
+    if stringcontain: return "greet"
+    stringcontain = [ele for ele in bye_keywords if(ele in string)]
+    if stringcontain: return "bye"
+    stringcontain = [ele for ele in question_keywords if(ele in string)]
+    if stringcontain: return "question"
+    stringcontain = [ele for ele in suggest_keywords if(ele in string)]
+    if stringcontain: return "suggest"
+    stringcontain = [ele for ele in disagree_keywords if(ele in string)]
+    if stringcontain: return "disagree"
+    stringcontain = [ele for ele in agree_keywords if(ele in string)]
+    if stringcontain: return "agree"
+    stringcontain = [ele for ele in congrats_keywords if(ele in string)]
+    if stringcontain: return "congrats"
           
 #Checks the text for possible greeting and good bye phrases
 greetlist = []
@@ -182,6 +247,20 @@ byelist = nlineremover(byelist)
 
 print("List of possible greetings:")
 print(greetlist)
+
+namefreq = []
+position = 0
+position2 = 0
+for each in greetlist:
+  for each in names:
+    if names[position] in greetlist[position2]:
+      try:
+        namefreq[position] += 1
+      except:
+        namefreq.append(1)
+    position += 1
+  position2 +=1
+  position = 0
 
 def puncremover(list):
   position = 0
@@ -280,7 +359,7 @@ print(nounfreq)
 
 def matchncount(noun):
   try:
-    count = nouncount[noun_lemmatized.index(noun)]
+    count = nouncount[noun_lemmatized.index(noun.lower())]
   except:
     return 0
   return count
@@ -322,9 +401,37 @@ print(verbfreq)
 
 def matchvcount(verb):
   try:
-    count = verbcount[verb_lemmatized.index(verb)]
+    count = verbcount[verb_lemmatized.index(verb.lower())]
   except:
     return 0
   return count
 
-print(matchvcount("strike"))
+print(matchvcount("beware"))
+
+print(namefreq)
+position = 0
+position2 = 0
+name = ""
+for each in namefreq:
+  try:
+    if namefreq[position] > namefreq[names.index(name)]:
+      name = names[position]
+      position2 = position
+  except:
+    name = names[0]
+  position += 1
+print(name)
+
+clear = lambda : print('\n' * 150)
+clear()
+
+print("What is your name? ")
+username = input()
+
+print("Hello " + username + ", zote ai is now ready")
+
+while True:
+  #zote response
+  userinput = input().lower()
+  userintent = IntentMatcher(userinput, "")
+  print(userintent)
