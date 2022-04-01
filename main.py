@@ -60,9 +60,6 @@ for each in text_noun:
       noun_patterns.append(text_noun[position])
   position += 1
 
-#Prints detected noun patterns
-print("Noun Patterns Detected:")
-print(noun_patterns)
 
 #Verb Patterns
 position = 0
@@ -75,9 +72,6 @@ for each in text_verb:
       verb_patterns.append(text_verb[position])
   position += 1
 
-#Prints detected verb patterns
-print("Verb Patterns Detected:")
-print(verb_patterns)
 
 #Entity Patterns
 position = 0
@@ -90,9 +84,6 @@ for each in text_entity:
       entity_patterns.append(text_entity[position])
   position += 1
 
-#Prints detected entity patterns
-print("Entity Patterns Detected:")
-print(entity_patterns)
 
 #Lemmatize removes differnt words that means the same thing, i.e. 'Study',' Studying' => 'Study'
 verb_lemmatized = []
@@ -112,10 +103,6 @@ for each in noun_patterns:
       noun_lemmatized.append(str.lower(lemmatizer.lemmatize(noun_patterns[position], pos = 'n')))
   position += 1
   
-print("Lemmatized Verbs:")
-print(verb_lemmatized)
-print("Lemmatized Nouns:")
-print(noun_lemmatized)
 
 txtlist = []
 dupetxt = txt
@@ -129,7 +116,6 @@ while True:
       position = 0
     position += 1
   except:
-    print('done')
     break
 
 names = []
@@ -138,7 +124,6 @@ for each in entity_patterns:
   if entity_patterns[position][1] == "PERSON":
     names.append(entity_patterns[position][0].lower())
   position += 1
-  print(names)
 
 hello_words = ["hello"]
 hello_keywords = []
@@ -221,13 +206,9 @@ byelist = []
 position = 0
 for each in txtlist:
   if IntentMatcher(txtlist[position], "greet"):
-    print("Greeting identified")
     greetlist.append(txtlist[position])
-    print(txtlist[position])
   if IntentMatcher(txtlist[position], "bye"):
-    print("Goodbye identified")
     byelist.append(txtlist[position])
-    print(txtlist[position])
   position += 1
 
 #Removes '\n' from the list inserted into the function
@@ -245,8 +226,6 @@ def nlineremover(list):
 greetlist = nlineremover(greetlist)
 byelist = nlineremover(byelist)
 
-print("List of possible greetings:")
-print(greetlist)
 
 namefreq = []
 position = 0
@@ -291,8 +270,6 @@ for each in dupetxt:
   while dupetxt.count(countingtxt) > 0:
     dupetxt.remove(countingtxt)
 
-print(txtcount)
-print(txtcountmatch)
 
 def matchcount(string):
   try:
@@ -301,9 +278,6 @@ def matchcount(string):
     return 0
   return count
 
-print(matchcount("you"))
-print(matchcount("to"))
-print(matchcount("father"))
 
 #Calculates the frequency of a word in the text
 totalwords = 0
@@ -311,18 +285,12 @@ position = 0
 for each in txtcount:
   totalwords += txtcount[position]
   position += 1
-print(totalwords)
 txtfreq = []
 position = 0
 for each in txtcount:
   txtfreq.append(float(txtcount[position] / totalwords))
   position += 1
 
-print(txtfreq)
-
-print(len(txtfreq))
-print(len(txtcountmatch))
-print(len(txtcount))
 
 lemmatxt = Lemmatize(txt).lower().split()
 lemmatxt = puncremover(lemmatxt)
@@ -346,7 +314,6 @@ for each in nouncount:
   totalnoun += nouncount[position]
   position += 1
 
-print(totalnoun)
 
 nounfreq = []
 position = 0
@@ -354,8 +321,6 @@ for each in nouncount:
   nounfreq.append(nouncount[position] / totalnoun)
   position += 1 
 
-print(noun_lemmatized)
-print(nounfreq)
 
 def matchncount(noun):
   try:
@@ -364,7 +329,6 @@ def matchncount(noun):
     return 0
   return count
 
-matchncount('you')
 
 lemmatxt = Lemmatize(txt).lower().split()
 lemmatxt = puncremover(lemmatxt)
@@ -387,8 +351,7 @@ totalverb = 0
 for each in verbcount:
   totalverb += verbcount[position]
   position += 1
-
-print(totalverb)
+  
 
 verbfreq = []
 position = 0
@@ -396,8 +359,6 @@ for each in verbcount:
   verbfreq.append(verbcount[position] / totalverb)
   position += 1 
 
-print(verb_lemmatized)
-print(verbfreq)
 
 def matchvcount(verb):
   try:
@@ -406,9 +367,6 @@ def matchvcount(verb):
     return 0
   return count
 
-print(matchvcount("beware"))
-
-print(namefreq)
 position = 0
 position2 = 0
 name = ""
@@ -420,7 +378,6 @@ for each in namefreq:
   except:
     name = names[0]
   position += 1
-print(name)
 
 clear = lambda : print('\n' * 150)
 clear()
