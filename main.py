@@ -8,17 +8,24 @@
 #Position - this is used to get a position in a list or text(same for position 2)
 #
 #
+import random
 import string
 import spacy
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
+from nltk.tokenize import word_tokenize
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt')
+nltk.download('universal_tagset')
 nlp = spacy.load('en_core_web_sm')
+grammar = "NP: {<DT>?<JJ>*<NN>}"
+Parser = nltk.RegexpParser(grammar)
 lemmatizer = WordNetLemmatizer()
 
+#Creates empty list
 text_noun = []
 text_entity = []
 text_verb = []
@@ -44,10 +51,13 @@ for entity in nlptext.ents:
   text_entity[position].append(entity.label_)
   position += 1
 
-#Identify speech patterns in nouns and verbs and entitys
+
+#Creates more empty list to store noun and verb and entity patterns
 noun_patterns = []
 verb_patterns = []
 entity_patterns = []
+
+#Identify speech patterns in nouns and verbs and entitys
 
 #Nouns Patterns
 position = 0
@@ -86,9 +96,11 @@ for each in text_entity:
 
 
 #Lemmatize removes differnt words that means the same thing, i.e. 'Study',' Studying' => 'Study'
+  #Create two empty list
 verb_lemmatized = []
 noun_lemmatized = []
 
+#Sets posititon to 0 then iterates through list to find verbs that appear more than once, then adds one to position and does the same thing again
 position = 0
 for each in verb_patterns:
   if len(verb_patterns) > position:
@@ -96,28 +108,30 @@ for each in verb_patterns:
       verb_lemmatized.append(str.lower(lemmatizer.lemmatize(verb_patterns[position], pos = 'v')))
   position += 1
 
+#Sets posititon to 0 then iterates through list to find nouns that appear more than once, then adds one to position and does the same thing again
 position = 0
 for each in noun_patterns:
   if len(noun_patterns) > position:
     if noun_lemmatized.count(str.lower(lemmatizer.lemmatize(noun_patterns[position], pos = 'n'))) < 1:
       noun_lemmatized.append(str.lower(lemmatizer.lemmatize(noun_patterns[position], pos = 'n')))
   position += 1
-  
 
+print(noun_lemmatized)
+
+#Creates a dupelicate of text of a new chunked text list
 txtlist = []
 dupetxt = txt
 position = 0
 #Turns the txt into a list of phrases
-while True:
-  try:
-    if dupetxt[position] == '\n':
-      txtlist.append(dupetxt[0:position].lower())
-      dupetxt = dupetxt.strip(dupetxt[0:position])
-      position = 0
-    position += 1
-  except:
-    break
+txtlist = open("CharacterText.txt")
+txtlist = txtlist.readlines()
+position = 0
+for each in txtlist:
+  txtlist[position] = txtlist[position].lower()
+  position += 1
+print(txtlist)
 
+#Finds likely candidates for ai character name in the greetings it has found
 names = []
 position = 0
 for each in entity_patterns:
@@ -125,21 +139,42 @@ for each in entity_patterns:
     names.append(entity_patterns[position][0].lower())
   position += 1
 
-hello_words = ["hello"]
-hello_keywords = []
+#Creates list for keywords used in specific parts of speach
+hello_words = ["hello", "greetings", "i am"]
 bye_words = ["bye","goodbye","cya","see you","later","farewell","so long"]
-bye_keywords = []
-agree_words = ["exactly","yep","indeed","correct","definitely"]
-agree_keywords = []
+agree_words = ["exactly","yep","indeed","correct","definitely","cool"]
 disagree_words = ["no","not","wrong"]
-disagree_keywords = []
 suggest_words = ["perhaps","maybe","what if"]
-suggest_keywords = []
-congrat_words = ["congratulations", "well done"]
-congrats_keywords = []
-question_words = ["what","why","who","when","where"]
-question_keywords = []
-#identifies various synonyms
+congrat_words = ["congratulations", "well done","!","wow","yay","great","nice"]
+question_words = ["what","why","who","when","where","?","how"]
+insult_words = ["idiot","moron","cur","buffoon","knobhead","dork","stupid","bonehead","dingbat","airhead","scum","scumbag","geek","nerd","muppet"]
+
+tokenlist = []
+dupetxt = word_tokenize(txt)
+dupetxt = nltk.pos_tag(dupetxt, tagset="universal")
+print(dupetxt)
+
+position = 0
+for each in dupetxt:
+  if tokenlist.count(dupetxt[position]) == 0 and not (dupetxt[position][1] == '.'):
+    tokenlist.append(dupetxt[position])
+  position += 1
+  
+print(tokenlist)
+
+position = 0
+nounlist = []
+verblist = []
+for each in tokenlist:
+  if tokenlist[position][1] == 'NOUN':
+    nounlist.append(tokenlist[position])
+  if tokenlist[position][1] == 'VERB':
+    verblist.append(tokenlist[position])
+  position += 1
+
+print(nounlist)
+print(verblist)
+#identifies various synonyms of any inserted word, then returns them in a list with the original words aswell
 def getSynonym(list):
   position = 0
   Synonymlist = []
@@ -151,67 +186,91 @@ def getSynonym(list):
   Synonymlist.extend(list)
   return Synonymlist
 
-hello_keywords = getSynonym(hello_words)
-bye_keywords = getSynonym(bye_words)
-agree_keywords = getSynonym(agree_words)
-disagree_keywords = getSynonym(disagree_words)
-suggest_keywords = getSynonym(suggest_words)
-congrats_keywords = getSynonym(congrat_words)
-question_keywords = getSynonym(question_words)
+#Adds synonyms of known key words to key word list to increase the abilities of searching for these types of text
+hello_words = getSynonym(hello_words)
+bye_words = getSynonym(bye_words)
+agree_words = getSynonym(agree_words)
+disagree_words = getSynonym(disagree_words)
+suggest_words = getSynonym(suggest_words)
+congrats_words = getSynonym(congrat_words)
+question_words = getSynonym(question_words)
 
 
-#Test phrases for various intents such as greeting or good bye type messages
+#Test phrases for various intents such as greeting or good bye type messages, or returns type if not given based on priority(this is the order they appear in in the function)
 position2 = 0
 def IntentMatcher(string, intent):
   if intent == "greet":
-    stringcontain = [ele for ele in names if(ele in string)] and [ele for ele in hello_keywords if(ele in string)]
+    stringcontain = [ele for ele in names if(ele in string)] and [ele for ele in hello_words if(ele in string)]
     return stringcontain
   elif intent == "bye":
-    stringcontain = [ele for ele in bye_keywords if(ele in string)]
+    stringcontain = [ele for ele in bye_words if(ele in string)]
     return stringcontain
   elif intent == "agree":
-    stringcontain = [ele for ele in agree_keywords if(ele in string)]
+    stringcontain = [ele for ele in agree_words if(ele in string)]
     return stringcontain
   elif intent == "disagree":
-    stringcontain = [ele for ele in disagree_keywords if(ele in string)]
+    stringcontain = [ele for ele in disagree_words if(ele in string)]
     return stringcontain
   elif intent == "suggest":
-    stringcontain = [ele for ele in suggest_keywords if(ele in string)]
+    stringcontain = [ele for ele in suggest_words if(ele in string)]
     return stringcontain
-  elif intent == "congrats":
-    stringcontain = [ele for ele in congrats_keywords if(ele in string)]
+  elif intent == "congrat":
+    stringcontain = [ele for ele in congrats_words if(ele in string)]
     return stringcontain
   elif intent == "question":
-    stringcontain = [ele for ele in question_keywords if(ele in string)]
+    stringcontain = [ele for ele in question_words if(ele in string)]
     return stringcontain
+  elif intent == "insult":
+    stringcontain = [ele for ele in insult_words if(ele in string)]
   else:
-    stringcontain = [ele for ele in hello_keywords if(ele in string)]
+    stringcontain = [ele for ele in hello_words if(ele in string)]
     if stringcontain: return "greet"
-    stringcontain = [ele for ele in bye_keywords if(ele in string)]
+    stringcontain = [ele for ele in bye_words if(ele in string)]
     if stringcontain: return "bye"
-    stringcontain = [ele for ele in question_keywords if(ele in string)]
+    stringcontain = [ele for ele in question_words if(ele in string)]
     if stringcontain: return "question"
-    stringcontain = [ele for ele in suggest_keywords if(ele in string)]
+    stringcontain = [ele for ele in suggest_words if(ele in string)]
     if stringcontain: return "suggest"
-    stringcontain = [ele for ele in disagree_keywords if(ele in string)]
+    stringcontain = [ele for ele in disagree_words if(ele in string)]
     if stringcontain: return "disagree"
-    stringcontain = [ele for ele in agree_keywords if(ele in string)]
+    stringcontain = [ele for ele in agree_words if(ele in string)]
     if stringcontain: return "agree"
-    stringcontain = [ele for ele in congrats_keywords if(ele in string)]
-    if stringcontain: return "congrats"
-          
-#Checks the text for possible greeting and good bye phrases
+    stringcontain = [ele for ele in congrats_words if(ele in string)]
+    if stringcontain: return "congrat"
+
+#Checks the text for possible intent phrases
 greetlist = []
 byelist = []
+agreelist = []
+disagreelist = []
+questionlist = []
+suggestlist = []
+congratlist = []
 position = 0
 for each in txtlist:
   if IntentMatcher(txtlist[position], "greet"):
     greetlist.append(txtlist[position])
+    
   if IntentMatcher(txtlist[position], "bye"):
     byelist.append(txtlist[position])
+    
+  if IntentMatcher(txtlist[position], "agree"):
+    agreelist.append(txtlist[position])
+    
+  if IntentMatcher(txtlist[position], "disagree"):
+    disagreelist.append(txtlist[position])
+    
+  if IntentMatcher(txtlist[position], "suggest"):
+    suggestlist.append(txtlist[position])
+    
+  if IntentMatcher(txtlist[position], "question"):
+    questionlist.append(txtlist[position])
+    
+  if IntentMatcher(txtlist[position], "congrat"):
+    congratlist.append(txtlist[position])
   position += 1
 
-#Removes '\n' from the list inserted into the function
+#Removes '\n' from the test lists inserted into the function
 def nlineremover(list):
   position = 0
   newlist = []
@@ -223,13 +282,11 @@ def nlineremover(list):
     position += 1
   return newlist
 
-greetlist = nlineremover(greetlist)
-byelist = nlineremover(byelist)
-
-
+#Creates new list and set postion 1 & 2 to 0
 namefreq = []
 position = 0
 position2 = 0
+#Gets frequency of names and inserts in new list
 for each in greetlist:
   for each in names:
     if names[position] in greetlist[position2]:
@@ -241,6 +298,7 @@ for each in greetlist:
   position2 +=1
   position = 0
 
+#Remove all puntuation from inserted list
 def puncremover(list):
   position = 0
   newlist = []
@@ -249,6 +307,7 @@ def puncremover(list):
     position += 1
   return newlist
 
+#Lemmatizes string inserted
 def Lemmatize(string):
   lemmatizedstring = ''
   lemmatizedstring += str.lower(lemmatizer.lemmatize(string, pos = 'n'))
@@ -258,7 +317,7 @@ def Lemmatize(string):
   lemmatizedstring += str.lower(lemmatizer.lemmatize(string, pos = 's'))
   return string
 
-#Turns the text into a list of numbers
+#Turns the text into a list of numbers based on how many times they appear, and puts it into two new list
 dupetxt = nlineremover(txt.lower().split())
 dupetxt = puncremover(dupetxt)
 txtcount = []
@@ -270,7 +329,7 @@ for each in dupetxt:
   while dupetxt.count(countingtxt) > 0:
     dupetxt.remove(countingtxt)
 
-
+#
 def matchcount(string):
   try:
     count = txtcount[txtcountmatch.index(string.lower())]
@@ -279,49 +338,54 @@ def matchcount(string):
   return count
 
 
-#Calculates the frequency of a word in the text
+#Calculates the frequency of a word in the text(amount of word in text / total words)
 totalwords = 0
 position = 0
+#Counts total words
 for each in txtcount:
   totalwords += txtcount[position]
   position += 1
+
+#Creates a new list with the count of each word turned into a frequency
 txtfreq = []
 position = 0
 for each in txtcount:
   txtfreq.append(float(txtcount[position] / totalwords))
   position += 1
 
-
+#Creates a lemmatized verions of the entire text, then removes punctuatuion
 lemmatxt = Lemmatize(txt).lower().split()
 lemmatxt = puncremover(lemmatxt)
 dupelemmatxt = lemmatxt
 position = 0
 #Frequency of nouns and verbs
+#Counts number of times a noun is in text
 nouncount = []
 position = 0
 for each in noun_lemmatized:
   nouncount.append(dupelemmatxt.count(noun_lemmatized[position].lower()))
   position += 1
-
+#If the noun is not found(returns 0) in lemmatized text it is removed
 while nouncount.count(0) > 0:
   position2 = nouncount.index(0)
   nouncount.pop(position2)
   noun_lemmatized.pop(position2)
 
+#Counts the total amount of nouns
 position = 0
 totalnoun = 0
 for each in nouncount:
   totalnoun += nouncount[position]
   position += 1
 
-
+#Divides amount of time a noun is in text by the total to get frequency, puts into new list
 nounfreq = []
 position = 0
 for each in nouncount:
   nounfreq.append(nouncount[position] / totalnoun)
   position += 1 
 
-
+#Creates a function that returns the amount of times a noun is in the text
 def matchncount(noun):
   try:
     count = nouncount[noun_lemmatized.index(noun.lower())]
@@ -329,18 +393,13 @@ def matchncount(noun):
     return 0
   return count
 
-
-lemmatxt = Lemmatize(txt).lower().split()
-lemmatxt = puncremover(lemmatxt)
-dupelemmatxt = lemmatxt
-position = 0
-
+#Counts the amount of times a verb appears in the text
 verbcount = []
 position = 0
 for each in verb_lemmatized:
   verbcount.append(dupelemmatxt.count(verb_lemmatized[position].lower()))
   position += 1
-
+#Remove verbs that did not appear in the lemmatized list
 while verbcount.count(0) > 0:
   position2 = verbcount.index(0)
   verbcount.pop(position2)
@@ -348,18 +407,19 @@ while verbcount.count(0) > 0:
 
 position = 0
 totalverb = 0
+#Counts the total amount of verbs
 for each in verbcount:
   totalverb += verbcount[position]
   position += 1
-  
 
+#Divides amount of time a noun is in text by the total to get frequency, puts into new list
 verbfreq = []
 position = 0
 for each in verbcount:
   verbfreq.append(verbcount[position] / totalverb)
   position += 1 
 
-
+#Creates a function that returns the amount of times a verb is in the text
 def matchvcount(verb):
   try:
     count = verbcount[verb_lemmatized.index(verb.lower())]
@@ -370,6 +430,7 @@ def matchvcount(verb):
 position = 0
 position2 = 0
 name = ""
+#Sets the most common name to the name of the ai
 for each in namefreq:
   try:
     if namefreq[position] > namefreq[names.index(name)]:
@@ -379,16 +440,76 @@ for each in namefreq:
     name = names[0]
   position += 1
 
+#This is a lambda function to make the console appear empty
 clear = lambda : print('\n' * 150)
 clear()
+
+#This is how the bot generates a greeting
+def Greeting():
+  position = 0
+  tokenisedlist = []
+  for each in greetlist:
+    tokenisedlist.append(word_tokenize(greetlist[position]))
+    position += 1
+  structurelist = []
+  structurelist.append(nltk.pos_tag(tokenisedlist))
+  
+  greettext = ""  
+  return greettext
 
 print("What is your name? ")
 username = input()
 
-print("Hello " + username + ", zote ai is now ready")
+print("Hello " + username + ", Zote AI is now ready")
 
 while True:
   #zote response
-  userinput = input().lower()
+  
+  try:
+    userinput = input().lower()
+  except:
+    userinput = ""
   userintent = IntentMatcher(userinput, "")
-  print(userintent)
+  if userinput == "exit":
+    print("Shuting down...")
+    break
+    
+  if userintent == "greet" and len(greetlist) > 0:
+    nametoken = word_tokenize(name)
+    nametoken = nltk.pos_tag(nametoken, tagset="universal")
+    dupetxt = word_tokenize(greetlist[random.randint(0, len(greetlist) - 1)])
+    dupetxt = nltk.pos_tag(dupetxt, tagset="universal")
+
+    try:
+      dupetxt.index(nametoken[1])
+      nameposition = dupetxt.index(nametoken[1])
+    except: 
+      nameposition = "N/A"
+    for each in nametoken:
+      try:
+        dupetxt.pop(dupetxt.index(each))
+      except:
+        position += 1
+
+    print(nameposition)
+    print(nametoken)
+    print(dupetxt)
+    print(greetlist[random.randint(0, len(greetlist) - 1)])
+    
+  if userintent == "bye" and len(byelist) > 0:
+    print(byelist[random.randint(0, len(byelist) - 1)])
+    
+  if userintent == "agree" and len(agreelist) > 0:
+    print(agreelist[random.randint(0, len(agreelist) - 1)])
+    
+  if userintent == "disagree" and len(disagreelist) > 0:
+    print(disagreelist[random.randint(0, len(disagreelist) - 1)])
+    
+  if userintent == "question" and len(questionlist) > 0:
+    print(questionlist[random.randint(0, len(questionlist) - 1)])
+    
+  if userintent == "suggest" and len(suggestlist) > 0:
+    print(suggestlist[random.randint(0, len(suggestlist) - 1)])
+    
+  if userintent == "congrat" and len(congratlist) > 0:
+    print(congratlist[random.randint(0, len(congratlist) - 1)])

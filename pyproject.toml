@@ -11,8 +11,6 @@ requests = "^2.27.1"
 spacy = "^3.2.3"
 nltk = "^3.7"
 wordnet = "^0.0.1-beta.2"
-sklearn = "^0.0"
-gpt2 = "^0.0.4"
 
 [tool.poetry.dev-dependencies]
 
