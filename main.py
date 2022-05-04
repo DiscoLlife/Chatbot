@@ -165,11 +165,17 @@ print(tokenlist)
 position = 0
 nounlist = []
 verblist = []
+adverblist = []
+adjectivelist = []
 for each in tokenlist:
   if tokenlist[position][1] == 'NOUN':
     nounlist.append(tokenlist[position])
   if tokenlist[position][1] == 'VERB':
     verblist.append(tokenlist[position])
+  if tokenlist[position][1] == 'ADV':
+    adverblist.append(tokenlist[position])
+  if tokenlist[position][1] == 'ADJ':
+    adjectivelist.append(tokenlist[position])
   position += 1
 
 print(nounlist)
@@ -475,6 +481,7 @@ while True:
     break
     
   if userintent == "greet" and len(greetlist) > 0:
+    newsentence = []
     nametoken = word_tokenize(name)
     nametoken = nltk.pos_tag(nametoken, tagset="universal")
     dupetxt = word_tokenize(greetlist[random.randint(0, len(greetlist) - 1)])
@@ -489,8 +496,24 @@ while True:
       try:
         dupetxt.pop(dupetxt.index(each))
       except:
-        position += 1
+        this_is_usless = "lol"
+        
+    for each in dupetxt:
+      if  dupetxt.index(each) == nameposition:
+        newsentence.extend(nametoken)
+        newsentence.append(each)
+      elif each[1] == 'NOUN':
+        newsentence.append(nounlist[random.randint(0, len(nounlist) - 1)])
+      elif each[1] == 'VERB':
+        newsentence.append(verblist[random.randint(0, len(verblist) - 1)])
+      elif each[1] == 'ADV':
+        newsentence.append(adverblist[random.randint(0, len(adverblist) - 1)])
+      elif each[1] == 'ADJ':
+        newsentence.append(adjectivelist[random.randint(0, len(adjectivelist) - 1)])
+      else:
+        newsentence.append(each)
 
+    print(newstence)
     print(nameposition)
     print(nametoken)
     print(dupetxt)
