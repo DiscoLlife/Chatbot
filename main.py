@@ -142,10 +142,10 @@ for each in entity_patterns:
 #Creates list for keywords used in specific parts of speach
 hello_words = ["hello", "greetings", "i am"]
 bye_words = ["bye","goodbye","cya","see you","later","farewell","so long"]
-agree_words = ["exactly","yep","indeed","correct","definitely","cool"]
-disagree_words = ["no","not","wrong"]
+agree_words = ["exactly","yep","indeed","correct","definitely","cool","agree","yes"]
+disagree_words = ["no","not","wrong","disagree"]
 suggest_words = ["perhaps","maybe","what if"]
-congrat_words = ["congratulations", "well done","!","wow","yay","great","nice"]
+congrat_words = ["congratulations", "well done","wow","yay","great","nice"]
 question_words = ["what","why","who","when","where","?","how"]
 insult_words = ["idiot","moron","cur","buffoon","knobhead","dork","stupid","bonehead","dingbat","airhead","scum","scumbag","geek","nerd","muppet"]
 
@@ -450,23 +450,53 @@ for each in namefreq:
 clear = lambda : print('\n' * 150)
 clear()
 
-#This is how the bot generates a greeting
-def Greeting():
-  position = 0
-  tokenisedlist = []
-  for each in greetlist:
-    tokenisedlist.append(word_tokenize(greetlist[position]))
-    position += 1
-  structurelist = []
-  structurelist.append(nltk.pos_tag(tokenisedlist))
-  
-  greettext = ""  
-  return greettext
-
 print("What is your name? ")
 username = input()
 
 print("Hello " + username + ", Zote AI is now ready")
+
+def Generate(List):
+  newsentence = []
+  nametoken = word_tokenize(name)
+  nametoken = nltk.pos_tag(nametoken, tagset="universal")
+  dupetxt = word_tokenize(List[random.randint(0, len(List) - 1)])
+  dupetxt = nltk.pos_tag(dupetxt, tagset="universal")
+
+  try:
+    dupetxt.index(nametoken[1])
+    nameposition = dupetxt.index(nametoken[1])
+  except: 
+    nameposition = "N/A"
+  for each in nametoken:
+    try:
+      dupetxt.pop(dupetxt.index(each))
+    except:
+      this_is_usless = "lol"
+      
+  for each in dupetxt:
+    if  dupetxt.index(each) == nameposition:
+      newsentence.extend(nametoken)
+      newsentence.append(each)
+      
+    elif each[1] == 'NOUN':
+      newsentence.append(nounlist[random.randint(0, len(nounlist) - 1)])
+    elif each[1] == 'VERB':
+      newsentence.append(verblist[random.randint(0, len(verblist) - 1)])
+    elif each[1] == 'ADV':
+      newsentence.append(adverblist[random.randint(0, len(adverblist) - 1)])
+    elif each[1] == 'ADJ':
+      newsentence.append(adjectivelist[random.randint(0, len(adjectivelist) - 1)])
+    else:
+      newsentence.append(each)
+
+  untoken = ""
+  for each in newsentence:
+    if not (each[1] == '.'):
+      untoken = untoken + " " + each[0].lower()
+    else:
+      untoken = untoken + each[0].lower()
+
+  print(untoken)
 
 while True:
   #zote response
@@ -481,58 +511,22 @@ while True:
     break
     
   if userintent == "greet" and len(greetlist) > 0:
-    newsentence = []
-    nametoken = word_tokenize(name)
-    nametoken = nltk.pos_tag(nametoken, tagset="universal")
-    dupetxt = word_tokenize(greetlist[random.randint(0, len(greetlist) - 1)])
-    dupetxt = nltk.pos_tag(dupetxt, tagset="universal")
-
-    try:
-      dupetxt.index(nametoken[1])
-      nameposition = dupetxt.index(nametoken[1])
-    except: 
-      nameposition = "N/A"
-    for each in nametoken:
-      try:
-        dupetxt.pop(dupetxt.index(each))
-      except:
-        this_is_usless = "lol"
-        
-    for each in dupetxt:
-      if  dupetxt.index(each) == nameposition:
-        newsentence.extend(nametoken)
-        newsentence.append(each)
-      elif each[1] == 'NOUN':
-        newsentence.append(nounlist[random.randint(0, len(nounlist) - 1)])
-      elif each[1] == 'VERB':
-        newsentence.append(verblist[random.randint(0, len(verblist) - 1)])
-      elif each[1] == 'ADV':
-        newsentence.append(adverblist[random.randint(0, len(adverblist) - 1)])
-      elif each[1] == 'ADJ':
-        newsentence.append(adjectivelist[random.randint(0, len(adjectivelist) - 1)])
-      else:
-        newsentence.append(each)
-
-    print(newstence)
-    print(nameposition)
-    print(nametoken)
-    print(dupetxt)
-    print(greetlist[random.randint(0, len(greetlist) - 1)])
+    Generate(greetlist)
     
   if userintent == "bye" and len(byelist) > 0:
-    print(byelist[random.randint(0, len(byelist) - 1)])
+    Generate(byelist)
     
   if userintent == "agree" and len(agreelist) > 0:
-    print(agreelist[random.randint(0, len(agreelist) - 1)])
+    Generate(agreelist)
     
   if userintent == "disagree" and len(disagreelist) > 0:
-    print(disagreelist[random.randint(0, len(disagreelist) - 1)])
-    
+    Generate(disagreelist)
+    no
   if userintent == "question" and len(questionlist) > 0:
-    print(questionlist[random.randint(0, len(questionlist) - 1)])
+    Generate(questionlist)
     
   if userintent == "suggest" and len(suggestlist) > 0:
-    print(suggestlist[random.randint(0, len(suggestlist) - 1)])
+    Generate(suggestlist)
     
   if userintent == "congrat" and len(congratlist) > 0:
-    print(congratlist[random.randint(0, len(congratlist) - 1)])
+    Generate(congratlist)
