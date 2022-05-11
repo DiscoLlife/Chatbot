@@ -2,7 +2,7 @@
 name = "python-template"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["DiscoLlife <discollife.itch.io>"]
 
 [tool.poetry.dependencies]
 python = ">=3.8.0,<3.9"
@@ -11,6 +11,7 @@ requests = "^2.27.1"
 spacy = "^3.2.3"
 nltk = "^3.7"
 wordnet = "^0.0.1-beta.2"
+language-tool-python = "^2.7.1"
 
 [tool.poetry.dev-dependencies]
 
