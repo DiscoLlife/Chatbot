@@ -4,14 +4,18 @@
 #Message is sent throught intent detection
 #bot responds with another message with a hopefully valid response for that intent
 #
+#pip install --user --upgrade grammar-check
+import os
 import random
 import spacy
-import language_check
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
 from nltk.tokenize import word_tokenize
+import language_tool_python
+import discord
 
+tool = language_tool_python.LanguageToolPublicAPI('en-US')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 nltk.download('averaged_perceptron_tagger')
@@ -19,7 +23,6 @@ nltk.download('punkt')
 nltk.download('universal_tagset')
 nlp = spacy.load('en_core_web_sm')
 lemmatizer = WordNetLemmatizer()
-tool = language_check.LanguageTool('en-US')
 
 #Creates empty list
 text_noun = []
@@ -29,7 +32,6 @@ text_verb = []
 #Also tokenises & tags text for later usage
 txt = open('CharacterText.txt')
 txt = txt.read()
-nlp = spacy.load('en_core_web_sm')
 text = txt
 text = text.replace('\n', ' ')
 nlptext = nlp(text)
@@ -74,7 +76,6 @@ position = 0
 for entity in entity_patterns:
   if entity[1] == "PERSON":
     names.append(entity[0].lower())
-
 #Creates list for keywords used in specific parts of speach
 hello_words = ["hello", "greetings", "i am"]
 bye_words = ["bye", "goodbye", "cya", "see you", "later", "farewell", "so long"]
@@ -239,9 +240,9 @@ for greet in greetlist:
 
 name = ""
 #Sets the most common name to the name of the ai
-for each in namefreq:
+for each in names:
   try:
-    if each > namefreq[names.index(name)]:
+    if namefreq[names.index(each)] > namefreq[names.index(name)]:
       name = each
   except:
     name = names[0]
@@ -250,10 +251,9 @@ for each in namefreq:
 clear = lambda: print('\n' * 150)
 clear()
 
-print("Hello, Zote AI is now ready\n")
+print("Hello, Zote AI is now ready\nPlease start typing whatever you wish, and zote will always respond.")
 
-
-def Generate(List):
+def ZoteResponse(List):
   newsentence = []
   nametoken = word_tokenize(name)
   nametoken = nltk.pos_tag(nametoken, tagset="universal")
@@ -270,7 +270,7 @@ def Generate(List):
       dupetxt.pop(dupetxt.index(each))
     except:
       this_is_useless = "lol"
-
+  
   for each in dupetxt:
     if dupetxt.index(each) == nameposition:
       newsentence.extend(nametoken)
@@ -295,38 +295,56 @@ def Generate(List):
       untoken = untoken + each[0].lower()
 
   matches = tool.check(untoken)
-  untoken = language_check.correct(untoken, matches)
+  text = language_tool_python.utils.correct(untoken, matches)
+  
+  repeats = 0
+  while len(matches) > 0 and repeats < 3:
+    matches = tool.check(text)
+    text = language_tool_python.utils.correct(text, matches)
+    repeats += 1
 
-  print(untoken)
+  return text
 
+TOKEN = os.environ['token']
 
-while True:
-  #zote response
+client = discord.Client()
 
-  try:
-    userinput = input().lower()
-  except:
-    userinput = ""
-  userintent = IntentDetector(userinput)
-  if userinput == "exit":
-    print("Shuting down...")
-    break
+@client.event
+async def on_ready():
+  print(f'{client.user} has connected to Discord!')
 
-  if userintent == "greet" and len(greetlist) > 0:
-    Generate(greetlist)
-  elif userintent == "bye" and len(byelist) > 0:
-    Generate(byelist)
-  elif userintent == "agree" and len(agreelist) > 0:
-    Generate(agreelist)
-  elif userintent == "disagree" and len(disagreelist) > 0:
-    Generate(disagreelist)
-  elif userintent == "question" and len(questionlist) > 0:
-    Generate(questionlist)
-  elif userintent == "suggest" and len(suggestlist) > 0:
-    Generate(suggestlist)
-  elif userintent == "congrat" and len(congratlist) > 0:
-    Generate(congratlist)
-  elif userintent == "insult" and len(insultlist) > 0:
-    Generate(insultlist)
-  else:
-    Generate(txtlist)
+@client.event
+async def on_message(message):  
+  if message.author == client.user:
+    return
+
+  randnum = random.randint(0, 2)
+  #if fullstring.find(substring) != -1:
+  if (message.content.lower().find('zote') != -1):
+    randnum = 0
+    
+  if (randnum == 0):
+    userinput = message.content
+    userintent = IntentDetector(userinput)
+
+    if userintent == "greet" and len(greetlist) > 0:
+      messagetext = ZoteResponse(greetlist)
+    elif userintent == "bye" and len(byelist) > 0:
+      messagetext = ZoteResponse(byelist)
+    elif userintent == "agree" and len(agreelist) > 0:
+      messagetext = ZoteResponse(agreelist)
+    elif userintent == "disagree" and len(disagreelist) > 0:
+      messagetext = ZoteResponse(disagreelist)
+    elif userintent == "question" and len(questionlist) > 0:
+      messagetext = ZoteResponse(questionlist)
+    elif userintent == "suggest" and len(suggestlist) > 0:
+      messagetext = ZoteResponse(suggestlist)
+    elif userintent == "congrat" and len(congratlist) > 0:
+      messagetext = ZoteResponse(congratlist)
+    elif userintent == "insult" and len(insultlist) > 0:
+      messagetext = ZoteResponse(insultlist)
+    else:
+      messagetext = ZoteResponse(txtlist)
+    await message.channel.send(messagetext)
+
+client.run(TOKEN)
